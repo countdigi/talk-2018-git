@@ -1,417 +1,164 @@
 class: top
 
-![TEDDY](images/teddy-logo.gif)
+## Version Control with Git
+
+![Git Logo](images/git-logo.jpg)
 
 <br/>
-
-### Labdata Standard 1.0
-
-April 2017<br/>
+Kevin Counts<br/>
+Systems Engineering
 <br/>
-University of South Florida<br/>
+<br/>
 Health Informatics Institute<br/>
+University of South Florida<br/>
 
 ---
 
-![TEDDY](images/teddy-logo.gif)
+## The Version Dilema
 
-<br/>
+![Final Doc](images/final-doc.png)
 
-### Sections
-
-- Labdata Standard 1.0
-- Future Considerations
 
 ---
 
-![TEDDY](images/teddy-logo.gif)
+## What is Git?
 
-<br/>
-
-## Labdata Standard 1.0
 
 ---
 
-![TEDDY](images/teddy-logo.gif)
+## What is Git?
 
-<br/>
+- Version Control System
 
-### Intent
+--
 
-Formalize a policy and procedure for accepting subject sample omics data into
-the Data Coordinating Center.
+- Distributed
 
----
+--
 
-![TEDDY](images/teddy-logo.gif)
+- Supports non-linear development
 
-<br/>
+--
 
-### Namespace
-
-The TEDDY labdata filesystem namespace is:
-
-- From Linux: `/labdata/teddy/`
-- From Windows: `\\epi\root\datadepot\teddy\labdata`<br/>
-  (Shorcut is `U:\teddy\labdata`)
-
-Notes:
-- Read-Only except for DCCO actions (e.g. Creating Bundles and Bundle Indexes).
-- Windows mount path is on an alternate axis (`teddy` precedes `labdata`).
+- Ensures cryptographic integrity
 
 ---
 
-![TEDDY](images/teddy-logo.gif)
+## What is Git?
 
-<br/>
+**Version Control System (VCS)**
 
-### Filesystem
+--
 
-Labdata uses the Oracle ZFS Filesystem as its primary storage platform.
+- Software that manages the state of a folder's contents over time
 
-ZFS offers one of the highest-levels of data integrity available in the industry
-and is among few that actively guard against silent media corruption.
-The DCCO "Integrity Scrubs" the Labdata ZFS Filesystem on a regular schedule, e.g.:
+--
 
-    Data Profile: Double parity, Log Profile: Mirrored log
-    Online Data Errors: No known persistent errors
-    Scrub Status Scrub completed: 0 errors
-    2017-3-30 09:47:13 (73h40m)
+- The managed folder is called the Working Tree<br/>(e.g. `~/projects/teddy-human-wgs/`)
 
-See: https://en.wikipedia.org/wiki/ZFS#Data_integrity
+--
 
----
+- As files are added and modified in the Working Tree, versioning is accomplished by creating "Commits" which snapshot the state of all the files at that moment in time
 
-### TEDDY Labdata Lifecycle
+--
 
-<img src="images/omics-labdata-flow.svg" style="max-height: 60%; max-width=60%;"/>
+- Each commit is stored in a repository which is a hidden sub-folder named `.git/` under the Working Tree (e.g. `~/projects/teddy-human-wgs/.git/`)
 
----
+--
 
-![TEDDY](images/teddy-logo.gif)
-
-<br/>
-
-### Labdata Lifecycle
-
-1. Samples collected from Subjects
-1. Samples shipped to Provider for analysis (DNA Sequencing, etc.)
-1. Provider performs analysis
-1. Provider transfers results via Secure FTP to their Provider Inbox
-1. Provider notifies DCCA with a Transfer Report
-1. DCCA reviews/verifies Transfer Report
-1. DCCA generates an Ingest Request based on the Transfer Report and notifies DCCO
-1. DCCO reviews/verifies the Ingest Request
-1. DCCO creates a new Bundle and generates a Bundle Index
-1. DCCO notifies the DCCA
+- Version history is established by each commit having a pointer to its parent commit forming a "Commit Graph" pointing back in time<br/>(e.g. `c1 <- c2 <- c3 <- c4`)
 
 ---
 
-![TEDDY](images/teddy-logo.gif)
+## What is Git?
 
-<br/>
+**Distributed**
 
-### Concepts
+--
 
----
+- Each user has a full local copy of the repository and all history
 
-![TEDDY](images/teddy-logo.gif)
+--
 
-<br/>
+- Almost all operations can be performed locally without network connectivity
 
-#### Provider
+--
 
-A Provider is a named lab or similar entity which processes subject samples and transfers
-the analysis results to the DCC.
+- For collaborative work, a copy of the repository called a "remote" is established
 
-Since a lab may be associated with more than one study, `teddy-` should be prefixed to its
-provider account name (e.g. `teddy-abc`).
+--
 
-The same lab providing analysis for a different study will have a different account name
-(e.g. `acme-abc`) as well as a separate Provider Inbox.
+- A remote is any other copy of the repository other than the one you directly work out of
 
----
+--
 
-![TEDDY](images/teddy-logo.gif)
+- Changes are "pushed" and "fetched" through the remote for sharing
 
-<br/>
+--
 
-#### Data Transfer Folder (DTF)
-
-A top-level directory in the Provider Repository.
-
-The atomic unit of transfer from a Provider is a Data Transfer Folder.
-
-A Data Transfer Folder consists of:
-
-- A Data Transfer Folder Name, e.g.:<br/>
-  - `omics-1701`
-
-- One or more Data Transfer Folder Paths, e.g.:
-  - `Batch1/processed/XYZ123/XYZ123_1.fastq.bz2`
-  - `Batch1/processed/XYZ123/XYZ123_2.fastq.bz2`
+- Github is often chosen to host the remote but using Git does not require Github
 
 ---
 
-![TEDDY](images/teddy-logo.gif)
+## What is Git?
 
-<br/>
+**Supports Non-Linear Development**
 
-#### Data Transfer Folder Example
+--
 
-Full Path of Provider Inbox (`/labdata/teddy/abc/_inbox/`) with the Data Transfer Folder Name `omics-1701/`:
+- Efficient and powerful branching model
 
-- `/labdata/teddy/abc/_inbox/omics-1701/`
+--
 
-Full path of Provider Inbox (`/labdata/teddy/abc/_inbox/`), Data Transfer Folder Name (`omics-1701/`), and Data Transfer Folder Paths:
+- Uses object-tree model with lightweight pointers yielding almost instant branch operations
 
-- `/labdata/teddy/abc/_inbox/omics-1701/Batch1/processed/XYZ123/XYZ123_1.fastq.bz2`
+--
 
-- `/labdata/teddy/abc/_inbox/omics-1701/Batch1/processed/XYZ123/XYZ123_1.fastq.bz2`
+- Development branches easily and inexpensively created, switched, merged, or thrown-away
 
----
+--
 
-![TEDDY](images/teddy-logo.gif)
+- In Git, every line of history is tracked through at least one branch (default is "master")
 
-<br/>
+--
 
-#### Provider Inbox
-
-The location where Data Transfer Folders from a Provider are transmitted.
-
-The provider transmits each Data Transfer Folder to their `inbox` directory on DCC FTP (`dccmirror.epi.usf.edu`)
-which maps internally to `/labdata/teddy/<provider_name>/_inbox/` (e.g. `/labdata/teddy/abc/_inbox/`).
-
-The DCCA should forward the following to the DCCO to establish a DCC FTP account and Provider Inbox:
-
-- Provider account name: (e.g. `teddy-abc`)
-- Provider source IPs: (e.g. `37.34.43.100`)
-
-Provider Accounts are documented here:<br/>
-https://github.com/usf-hii/docs/blob/master/omics/labdata-filetransfer-accounts.md
+- The starting branch "master" may be thought of as the main trunk of the tree but is no different in function than any other branch
 
 ---
 
-![TEDDY](images/teddy-logo.gif)
+## What is Git?
 
-<br/>
+**Ensures cryptographic integrity**
 
-#### Provider Repository
+--
 
-The final resting place of data sent, verified, and accepted from a Provider.
+- Every object stored in a Git repository has an object ID<br/>(e.g. `29933f2c3c2653cac59b4d7d325830e6f9fe3f04`)
 
-Flat namespace under `/labdata/teddy/` (e.g. `/labdata/teddy/abc/`) and
-contains Bundles and their corresponding Bundle Indexes.
+--
 
-Special directories are prefixed with the `_` character (e.g. `_inbox`) and not part of the Provider Repository
-(e.g. `/labdata/teddy/abc/_inbox/`).
+- The object ID is generated from the object's content creating a unique 40 character, 160-bit "Message Digest" or "Checksum Hash"
 
----
+--
 
-![TEDDY](images/teddy-logo.gif)
+- Since the algorithm Git uses to create this is the Secure Hash Algorithm (SHA-1), the object ID is referred to as simply the "SHA"
 
-<br/>
+--
 
-#### Bundle
+- The objects are stored in the repository with their filename set to their "SHA" (e.g. `.git/objects/29/933f2c3c2653cac59b4d7d325830e6f9fe3f04`).
 
-A Bundle is a specially named directory in the Provider Repository.
+--
 
-A Bundle is created by moving one or more Data Transfer Folders from a Provider Inbox
-into the Provider Repository under the Bundle directory establishing a uniquely
-namespaced, immutable set of data at a particular point in time.
+- This is called "Content Addressable Storage" (CAS) because you reference an object not by a human-readable filename but by its unique SHA that was generated based on its content.
 
-Once a Bundle is created it can never be altered and a new Bundle must be created for ingest of additional files.
+--
 
-This immutability establishes provenance and simplifies verification, replication, and archiving operations.
+- The chance of two objects generating the same SHA, called a Hash Collision, is the same as randomly picking the same atom on the same moon twice if we imagined there were 10 moons orbiting Earth
 
----
+--
 
-![TEDDY](images/teddy-logo.gif)
+- The commit history uses the SHA of its ancestor as well as the SHAs of all referenced trees and files to calculate its own SHA - this creates a verifiable chain ensuring cryptographic integrity
 
-<br/>
 
-#### Bundle Name
+## What is Git?
 
-A Bundle's name is composed of a Bundle Prefix (e.g. `Stool-16S`), a `-` character, and Bundle Prefix Number (e.g. `1`).
-
-The Bundle Prefix Number is incremented for each new Bundle created using the same Prefix (e.g. `Stool-16S-1`, `Stool-16S-2`).
-
-As an example, within the Provider Repository `/labdata/teddy/abc/`, the full paths of 3 Bundles might be:
-
-- `/labdata/teddy/abc/Stool-16S-1/`
-- `/labdata/teddy/abc/Stool-16S-2/`
-- `/labdata/teddy/abc/Plasma-WGS-1/`
-
----
-
-![TEDDY](images/teddy-logo.gif)
-
-<br/>
-
-#### Bundle Index
-
-For every Bundle, a corresponding file called a Bundle Index is generated by the DCCO at Bundle creation
-and located beside the bundle as `<bundle_name>.index` in the Provider Repository.
-
-As an example, within the Provider Repository `/labdata/teddy/abc/`, the  Bundle and Bundle Index would be:
-- `/labdata/teddy/abc/Stool-16S-1/`
-- `/labdata/teddy/abc/Stool-16S-1.index`
-
----
-
-![TEDDY](images/teddy-logo.gif)
-
-<br/>
-
-#### Bundle Index Format / Checksum Field
-
-The Bundle Index enumerates each file stored in the Bundle on its own colon-separated line consisting of the fields:
-1. Data Transfer Folder Name and Data Transfer Folder Path<br/>
-   (`omics-1710/Batch1/processed/XYZ123/XYZ123_1.fastq.bz2`)
-2. Size in bytes<br/>
-   (`89936774`)
-3. Checksum Values<br/>
-   (`[md5]8e787a[sha256]613e54`)
-
----
-
-![TEDDY](images/teddy-logo.gif)
-
-<br/>
-
-
-#### Bundle Index Format Checksum
-
-Field 3 of a line in the Bundle Index contains all checksums.
-
-Current checksums supported are `md5` and `sha256`.  Each checksum is prefixed with `[checksum_type]` and its value.
-
-For example, the checksum field for a file with an `md5` checksum and a `sha256` checksum:<br/>
-`[md5]8e787a[sha256]613e54`
-
-Extracting an md5 value in Bash:<br/>
-`awk -F: '{print $3}' /labdata/teddy/abc/Stool-16S-1.index \ `<br/>
-`  | sed -r 's/\[md5\]([^\[]*).*/\1/'`<br/>
-
-*Note*: The `md5` and `sha256` checksum values are truncated for readability.
-
----
-
-![TEDDY](images/teddy-logo.gif)
-
-<br/>
-
-#### Bundle Index Format Example
-
-For example, within the Provider Repository `/labdata/teddy/abc`, the Bundle `Stool-16S-1` containing the
-Data Transfer Folder `omics-1701` would have the following format:
-
-    $ head -n2 /labdata/teddy/abc/Stool-16S-1.index
-
-    omics-1701/Batch1/processed/XYZ123/XYZ123_1.fastq.bz2:89936774:[md5]8e787a[sha256]613e54
-    omics-1701/Batch1/processed/XYZ123/XYZ123_2.fastq.bz2:86621121:[md5]f99fe7[sha256]1b5dc6
-
----
-
-![TEDDY](images/teddy-logo.gif)
-
-<br/>
-
-### DCC Roles
-
-Description of the Data Coordinating Center Roles:
-
-- DCC Administration (DCCA) - Interfaces with Providers and DCCO
-
-- DCC Operations (DCCO) - Interfaces with DCCA and performs operatioons on Data Transfer Folders included in an Ingest Request
-
----
-
-![TEDDY](images/teddy-logo.gif)
-
-<br/>
-
-### DCC Roles @ USF HII
-
-- DCC Administration (DCCA)
-  - Primary Contact: Dena Garcia, Data Engineering
-
-- DCC Operations (DCCO)
-  - Primary Contact: Kevin Counts, Systems Engineering
-
-Ingest Requests updated at:<br/>
-https://github.com/usf-hii/docs/blob/master/omics/labdata.md
-
----
-
-![TEDDY](images/teddy-logo.gif)
-
-<br/>
-
-## Part II - Future Considerations
-
-- Transfer Report
-- Provider Contracts
-- Software Automation
-
----
-
-![TEDDY](images/teddy-logo.gif)
-
-<br/>
-
-### Transfer Report
-
-- Transfer Reports are currently a free-form e-mail between Provider and DCCA.
-
-- A more formalized standard for Transfer Reports could be beneficial (`HdX LabCli` has this idea)
-
-- Transfer Report could supplement/substitute Data Transfer Folder Path naming standards if all necessary
-  metadata was associated with each Data Transfer Folder Path
-
----
-
-![TEDDY](images/teddy-logo.gif)
-
-<br/>
-
-### Provider Contracts
-
-New Provider Contracts should ideally:
-- Agree on a shipment schedule (e.g. results should be shipped N days after processing for early feedback of pipeline)
-- Agree on a file checksum requirement
-  - Suggestion: `<file>.md5sum` for each file transmitted (e.g. `foo/baz/bar.txt` and `foo/baz/bar.txt.md5sum`)
-- Document a Data Transfer Folder Path standard for results data
-  - A General standard would be helpful (a. No Spaces, b. Only use the set [`a-z`, `A-Z`, `0-9`, `-`, `_`, or `.`] for file and directory
-    names)
-  - Specific Provider/Analyte may require altering or adding additional requirements to General standard including domain-specific file and directory naming convention
-  - Matching a file to a Sample ID is sometimes challenging without this Specific Provider/Analyte standard and is difficult to
-    automate
-
----
-
-![TEDDY](images/teddy-logo.gif)
-
-<br/>
-
-### Software Automation
-
-Although humans perform most of the DCCO and DCCA actions,
-automating more of these tasks may be beneficial in the future.
-
-For Example:<br/>
-
-[HdX LabCLI](https://github.com/usf-hii/dataeng-hdx-labcli) -
-Python Command-Line Application for sample processing labs to transfer files to the DCC using the
-[HdExchange](https://github.com/usf-hii/dataeng-hdexchange) Web API.
-
----
-
-![TEDDY](images/teddy-logo.gif)
-
-<br/>
-
-## Thank you!
-
-Standard at: <br/>
-https://github.com/usf-hii/docs/blob/master/omics/labdata-standard.md
+**Ensures cryptographic integrity**

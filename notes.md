@@ -1,31 +1,26 @@
-class: middle
 
-.right[![HII Logo](images/hii-logo.png)]
 
-# Git Version Control
+- Because the address space is so large and random, we can save typing using the first 7 characters of the SHA to Git (e.g.  `29933f2`) but scripts should use the full value.
 
-- Kevin Counts, Systems/Software Engineer
-  - Email: kevin.counts@hii.usf.edu
-  - Github: https://github.com/countdigi
+- The index is transitory information, is private to a repository, and can be created or modified on demand as needed.
 
-- Health Informatics Institute<br/>
-  USF Health, Tampa, Florida
-  - Web: http://www.hii.usf.edu
-  - Github: https://github.com/USF-HII
+- A Git repository is simply a database containing all the information needed to retain and manage the revisions and history of a project.
 
----
+- Git itself can be imagined as something that sits on top of your file system and manipulates files.
 
-## What is Git?
+- Even better, you can imagine Git as a tree structure where each commit creates a new node in that tree.
 
-.right[![Linus Torvalds](images/Linus_Torvalds.jpeg)]
+- Nearly all Git commands actually serve to navigate on this tree and to manipulate it accordingly.
 
-- Distributed Version Control System (DVCS) created by Linus Torvalds in 2005
+- As such in this tutorial I’d like to take a look at how Git works by viewing a Git repository from the point of view of the tree it constructs. To do so I walk through some common use cases like
 
-- Created as open-source alternative to BitKeeper for managing Linux Kernel project
+- Distributed Version Control System (DVCS) created by Linus Torvalds in 2005 for the Linux Kernel
 
 - Emphasis on speed, data integrity, and distributed workflows
 
 - Very popular for open-source software projects
+
+
 
 ---
 
