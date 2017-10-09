@@ -1,3 +1,99 @@
+- Git manages changes to a tree of files over time
+
+- Git is optimized for:
+  - Distributed Development
+  - Large file counts
+  - Complex merges
+  - Making trial branches
+  - Being very fast
+  - Being robust
+
+- The SHA1 is king
+  - objects consist of:
+    - blob (the contents of the file)
+    - tree (directories of blobs or other trees)
+    - commit:
+      - pointer to tree
+      - pointer to parent commit
+      - message explaining commit
+
+- usually one commit in the repo that has no parent commit ("root" commit)
+
+- The `.git` dir contains
+  - `config` - Configuration file
+  - `objects/*` - The ojbect repository
+  - `refs/heads/*` - branches (e.g. `refs/heads/master`)
+  - `refs/remotes/*` - remote tracking branches (e.g. `refs/remotes/origin/master`)
+  - `index` - the "index cache"
+  - `HEAD` - points to one of the branches (the current branch where commits go)
+
+- All git commands start with `git` (e.g. `git add`, `git commit`)
+
+- Creating a repo
+  - git init
+  - edit .gitignore
+  - git add .
+  - git commit
+  - git branch
+  - git log --all --decorate --pretty --graph
+  - git show --summary HEAD
+  - git show --summary master
+  - git show --summary commit
+
+- Cloning
+  - creates a git repo from an existing repo
+  - generally creates a subdirectory
+  - your workflies and .git are in there
+  - remote branches are "tracked"
+  - remote HEAD branch checke out as your initial master branch as well
+  - clone repo identifies as origin (just arbitrary default)
+
+- Commiting:
+  - Your work product is more commits
+  - These are always on a branch
+  - A branch is just a named commit
+  - When you commit, the former branch head becomes the parent
+  - The branch head moves to be the new commit
+  - Thus youre creating a directele acyclic graph
+  - a merge is a just a commit with multiple parents
+
+- A git repoistory is simply a database containing all the information neeed to reatin and manage the revisions and history of a
+  project
+
+- Unlike most other VCSs, the git repoistory not only provides a complete working copy of all the files in the repostitory but
+  also a copy of the repository itself with which to work
+
+- Within a repository there are two primary data structures:
+  - object store
+  - index
+
+- Each version of a file is represented as a blob. Blob, a contraction of “binary large object,” is a term that’s commonly used in
+  computing to refer to some variable or file that can contain any data and whose internal structure is ignored by the program. A
+  blob is treated as being opaque. A blob holds a file’s data but does not contain any metadata about the file or even its name.
+
+- Blobs - Each version of a file is represented as a blob. Blob, a contraction of “binary large object,” is a term that’s commonly used in
+  computing to refer to some variable or file that can contain any data and whose internal structure is ignored by the program. A
+  blob is treated as being opaque. A blob holds a file’s data but does not contain any metadata about the file or even its name.
+
+- Trees - A tree object represents one level of directory information. It records blob identifiers, path names, and a bit of metadata for
+  all the files in one directory. It can also recursively reference other (sub)tree objects and thus build a complete hierarchy of
+  files and subdirectories.
+
+- Commits - Each version of a file is represented as a blob. Blob, a contraction of “binary large object,” is a term that’s commonly
+  used in computing to refer to some variable or file that can contain any data and whose internal structure is ignored by the
+  program. A blob is treated as being opaque. A blob holds a file’s data but does not contain any metadata about the file or even
+  its name.
+
+  Trees - A tree object represents one level of directory information. It records blob identifiers, path names, and a bit of metadata for
+  all the files in one directory. It can also recursively reference other (sub)tree objects and thus build a complete hierarchy of
+  files and subdirectories.
+
+  Commits - A commit object holds metadata for each change introduced into the repository, including the author, committer, commit date, and
+  log message. Each commit points to a tree object that captures, in one complete snapshot, the state of the repository at the time
+  the commit was performed. The initial commit, or root commit, has no parent. Most commits have one commit parent, although later
+  in the book (Chapter 9) we explain how a commit can reference more than one parent.
+
+
 
 
 - Because the address space is so large and random, we can save typing using the first 7 characters of the SHA to Git (e.g.  `29933f2`) but scripts should use the full value.
@@ -56,7 +152,8 @@ project_folder/ <--- Working Directory
   .git/         <---- Repository
     index       <---- Staging Area (Index)
     HEAD        <---- Points to tip of current branch commit ID
-    ... etc.
+    refs/heads  <---- Holds local branch HEADs
+    objects/    <---- Contains blob (file), tree (directory), and commit objects
 ```
 
 ???
@@ -87,7 +184,7 @@ Run `git status` to view what state a file is in:
 $ git status --short
 
 |------ Column 1: Staging Area (Index)
- |------------------------------------- Column 2: Working Directory
+ |------------------------------------- Column 2: Working Tree
 
 ??   file1.txt  # Untracked
 A    file2.txt  # Staged new file
@@ -182,10 +279,6 @@ $ git status --short
 
 - If 2 objects generate the same message digest, this is called a hash collision. For SHA-1 it is astronomically improbable.
 
-<!--
-
-
-- http://ndpsoftware.com/git-cheatsheet.html#loc=stash; # cool visual exploration of git
 
 - ORIG_HEAD
 
@@ -207,55 +300,29 @@ done
 
 ## Initialize repository
 
-    $ mkdir ~/src/project42
+    $ mkdir ~/project/teddy-wgs
 
-    $ cd ~/src/project42
+    $ cd ~/project/teddy-wgs
 
-    $ touch README.md; git init
+    $ git init
 
-    $ tree
-    .
-    |----.git/
-    |    |-- HEAD
-    |    |-- branches/
-    |    |-- config
-    |    |-- objects/
-    |    |   |-- info/
-    |    |   |-- pack/
-    |    |-- refs/
-    |        |-- heads/
-    |        |-- tags/
-    |-- README.md
+    $ echo '# README' > README.md
 
+- Get Help
+  - `git help` - Show common sub-commands
+  - `git help -a` - Show all sub-commands
+  - `git help -g` - Show guides
 
+- Configure your identity
+  - `git config goba`
 
+- Resources
+  - http://ndpsoftware.com/git-cheatsheet.html#loc=stash; # cool visual exploration of git
+  - https://github.com/git-tips/tips
+  - Git Website/Book:  https://git-scm.com/
 
-
-# Git
-
-## References
-
-- Git Website/Book:  https://git-scm.com/
-- Wikpedia: https://en.wikipedia.org/wiki/Git_(software)
-
-## Get Help
-
-- `git help` - Show common sub-commands
-- `git help -a` - Show all sub-commands
-- `git help -g` - Show guides
-
-## Configure your identity
-
-- `git config --global user.name "Mary Smith"`
-- `git config --global user.email mary.smith@hii.usf.edu`
-
-
-## Misc
-
-- https://github.com/git-tips/tips
-
-Git is a distributed revision control system with an emphasis on speed, data integrity,
-and support for distributed, non-linear workflows created by Linus Torvalds in 2005 for development of the Linux kernel.
+- Git is a distributed revision control system with an emphasis on speed, data integrity,
+  and support for distributed, non-linear workflows created by Linus Torvalds in 2005 for development of the Linux kernel.
 
 - Every Git working directory is a full-flegded repository with complete history and full version-tracking capabilities,
   indepededent of network access or a central server.
@@ -269,8 +336,7 @@ and support for distributed, non-linear workflows created by Linus Torvalds in 2
 
   2. Immutable append-only object database.
 
-
-The object database contains four types of objects:
+- The object database contains four types of objects:
   - A blob (binary large object) is the content of a file. Blobs have no file name, time stamps, or other metadata.
   - A tree object is the equivalent of a directory.
     It contains a list of file names, each with some type bits and the name of a blob or tree object that is that file,
@@ -316,17 +382,3 @@ After doing changes in the working tree, the user can add these changes to the G
 
 HEAD is a symbolic reference most often pointing to the currently checked out branch.
 
----
-
-A repository contains the history, the different versions over time and all different branches and tags. In Git each copy of the repository is a complete repository. If the repository is not a bare repository, it allows you to checkout revisions into your working tree and to capture changes by creating new commits. Bare repositories are only changed by transporting changes from other repositories.
-
-This description uses the term repository to talk about a non-bare repository. If it talks about a bare repository, this is explicitly mentioned.
-Revision
-
-The working tree contains the set of working files for the repository. You can modify the content and commit the changes as new commits to the repository.
-
----
-
-
-
--->
