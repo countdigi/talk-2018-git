@@ -18,11 +18,21 @@ University of South Florida<br/>
 
 <br/>
 
-- A Version Control System (VCS) is a piece of software that helps manage a project's files
+- A Version Control System (VCS) helps users manage changes to files in a project over time
 
-- It stores a base version of each file and tracks changes made to the file over a period of time called Revisions
+- A VCS records a base version of each file and tracks changes made over time in a series of versions of the file called Revisions
 
-- These changes are stored in a "Revision History" and can be rewound and played back against the base version
+- Over time, the user creates Commits to snapshot new Revisions of the files
+
+- Each Commit is stored in a Repository establishing a Revision History
+
+- The changes from the Revision History can later be rewound and played back against the base versions of the
+  files to create different point-in-time representations
+
+- A VCS works best when managing text-based files
+
+- Most (e.g. Git) can handle binaries such as JPEG images or Word/Excel documents but with limitations
+  since they are essentially a "Black Box" to the VCS
 
 ---
 
@@ -30,7 +40,8 @@ University of South Florida<br/>
 
 ![Final Doc](images/swc-version-1.svg)
 
-As a file is changed, those changes are saved by the VCS in a series of commits which are stored *outside the file*.
+A files are changed, those changes are saved by the VCS in a series of commits which are stored in a Revision History
+*outside the file*.
 
 ---
 
@@ -38,20 +49,23 @@ As a file is changed, those changes are saved by the VCS in a series of commits 
 
 ![Final Doc](images/swc-version-2.svg)
 
-Once changes are managed outside the file, you can treat the file differently by playing
+Once changes are managed outside the file, you can treat a file differently by playing
 back different sets of changes.
 
-For example, the set of green changes was made by "User A" and the red changes by "User B".
+For example, the set of green changes was made by User A and the red changes by User B.
 
 ---
 
-## Commits allow merging
+## Merging Commits
 
-![Final Doc](images/swc-version-3.svg)
+.right[![Final Doc](images/swc-version-3.svg)]
 
-Later the sets of changes are played against the same base file merging them into one.
-Typically this works out well, but if both sets modify exactly the same location, a conflict may occur
-and a human must decide which change "wins" to resolve the conflict.
+Later the sets of changes from User A and User B are played against the same base file merging them into one.
+
+Typically this works out well, but if both users modify exactly the same location in the file a conflict may occur
+and the user merging the commits must decide which change "wins" to resolve the conflict.
+
+*Note -- One of the caveats of binary files like Word or Excel is that multiple changes cannot be merged*
 
 ---
 
@@ -63,19 +77,14 @@ and a human must decide which change "wins" to resolve the conflict.
 
 - Very popular due to its speed and distributed nature
 
-- No real "master" copy - each user has a complete copy of the Revision History on their local disk
+- No real "master" copy - each user has a complete copy of the Revision History in their Git Repository on local disk (`.git/`)
 
-- Most operations are performed locally with no network connection necessary
+- Almost all operations are performed locally with no network connection necessary
 
-- Changes are synchronized between users by pushing and fetching changes to and from another copy
-  of the Revision History called a "remote"
+- Changes in the local Repository are often pushed to and fetched from another copy of the Repository called a "remote"
+  which is no different in nature than the local copy (just located "remotely")
 
-- A remote copy of the Revision History is often hosted at Github to centralize sharing of changes
-  but no different than local copy on disk
-
-- You can create a locally-hosted remote by initializing a directory with `git init --bare <path>`
-  and specifying `file:///<path>` as the remote URI (the option `--bare` creates a Repository without
-  the Working Tree)
+- A common remote is a Github project - this allows the sharing of changes between users through a Central Repository
 
 ---
 
@@ -83,12 +92,11 @@ and a human must decide which change "wins" to resolve the conflict.
 
 Git has 3 areas where file contents resides:
 
-1. *Working Tree* - The project's top-level directory, sub-directories, and files from which the user reviews
-   content and makes changes
+1. *Working Tree* - The project's top-level directory, sub-directories, and files which the user edits and changes
 
-2. *Index* - A hidden, dynamic, binary file (located in the Repository) where changes to files are staged for future commits
+2. *Index* - A hidden, dynamic, binary file (`.git/index`) where changes to files in the Working Tree are staged for commit
 
-3. *Repository* - A special directory (usually named `.git/` located in the top-level of Working Tree) where commits are stored
+3. *Repository* - A top-level, hidden directory (`.git/`) containing the entire Revision History of the project
 
 ---
 
@@ -101,25 +109,28 @@ gradual transitions from one complex repository state to another.
 
 For example:
 - `git add` - stages changes made in the Working Tree into the Index
-- `git commit` - snapshots changes in the Index into a new Commit
+- `git commit` - snapshots changes staged in the Index into a new Commit
 - `git checkout` - modifies the Working Tree to match a revision in the Repository
 
-*Note: The Working Tree is sometimes called the Working Directory. The Index is sometimes called the Staging Area or Cache.*
+Note:
+- *The Working Tree is sometimes called the Working Directory*
+- *The Index is sometimes called the Staging Area or Cache*
 
 ---
 
 ## Basic Example
 
 To create a git project, we can initialize a project directory:
-
-    cd ~/projects/acme
-    git init .
+```
+$ cd ~/projects/acme
+$ git init .
+```
 
 This will create a `.git/` directory containing the Repository but leave all other files untouched.
 
 The project directory `~/projects/acme` is the top-level of our Working Tree.
 
-The Index where we will stage changes will be located in the special binary file `.git/index`.
+The Index where we will stage changes will be located in the special binary file `.git/index`
 
 ---
 
@@ -144,21 +155,25 @@ We now have the beginning of the Revision History which can be viewed with the `
 
         Add README.md
 
-Now lets make another change to `README.md`...
 
 ---
 
 ## Commit Graph
 
-If we make another change to `README.md`, stage the change in the Index with `git add` and commit the change with `git commit`, that new commit will store a pointer to our first commit building a chain.
+Now lets make another change to `README.md` by adding a new line of text.
 
-In the diagram, a single branch named master has a 4-commit revision history with `4e77435` as the initial commit and `01ac0f6` as the most recent commit.
+We then:
 
-The branch `master` points to the latest commit and `HEAD` points to the branch `master`.
+- Stage the change in the Index with `git add README.md`
+- Commit the change with `git commit -m 'Add new line to README.md'`
 
-`HEAD` tells Git what will be the parent of your next commit and so we say we are currently "on" the branch `master`.
+This new commit will store a pointer to our first commit and start building a chain.
+In the diagram below, we see a 4-commit Revision History with the default branch `master` pointing to the most recent commit id `01ac0f6`.
 
-Note the arrows pointing left-to-right in the diagram represent time, but the commit graph would be arrows pointing right-to-left (towards the past).
+The branch or commit id that `HEAD` points to is what Git uses for the parent of the next commit. We say we are on the `master` branch
+because `HEAD` points to `master` which points to its head, commit `01ac0f6`.
+Git will use `01ac0f6` as the parent of the next commit and then move the head of `master` forward to point to the new commit id and so on
+building the Revision History as a linked-list.
 
 ![Commit Graph](images/commit-chain.png)
 
@@ -166,16 +181,17 @@ Note the arrows pointing left-to-right in the diagram represent time, but the co
 
 ## The 3 Object Types
 
-Git maintains its Revision History through 3 types of objects:
+A Git Repository has 3 primary object types:
 
-- A *Blob* which contains the contents of a file
+- A *Blob* which holds the contents of a file
 
-- A *Tree* which contains entries referring to other Blobs and Trees
+- A *Tree* which maps a directory and its files and sub-directories to Blobs and Trees
 
 - A *Commit* which contains:
-   - A pointer to the project's top-level tree at a particular revision
-   - A pointer to a parent commit
-   - A message including details such as the author and date
+  - A pointer to the top-level Tree at time of commit
+  - A pointer to a parent commit
+  - A commit message
+  - Author and Date of the commit
 
 ---
 
