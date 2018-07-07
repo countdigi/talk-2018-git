@@ -179,29 +179,62 @@ Git maintains its Revision History through 3 types of objects:
 
 ---
 
-## SHA-1
+## The SHA
 
-When a Blob, Tree, or Commit is created, Git runs a special "Hash"" Algorithm
-which generates a unique identifier based on the contents of the object.
+When a Blob, Tree, or Commit object is created, Git uses something called a Hash Function
+to create a unique, fixed-size identifer based on the object's content.
 
-You can generate your own SHA-1 identifer from the CLI: <br/>
+Git uses the Secure Hash Algorithm 1 (SHA-1) to implement its hash function so
+the identifier is typically referred to as a "SHA". The SHA is a 160 bit value
+represented as a 40-character hexadecimal string (e.g. `6fbcbe046ef6288521d4559c35da541cf4ea428c`).
+
+You can generate your own SHA identifer from the CLI: <br/>
 ```
 $ echo '# Project Acme' | git hash-object --stdin
 6fbcbe046ef6288521d4559c35da541cf4ea428c
 ```
 
-If you make even a small change, the SHA-1 identifer changes drastically:
-```
-$ echo '# Project Acme 2' | git hash-object --stdin
-1c833668f7b54e5993df11c3934f6c0a78d7f41f
-```
-
-A SHA-1 identifier is guaranteed to be unique for each unique content. Therefore two files
-with the same content areonly stored once (but the names pointing to the content will differ within the Tree objects).
+Git allows users to provide a shortened version of the SHA, typically the first 7 characters of the identifier
+so the value `6fbcbe0` could be used to save typing.
+Git will let you know if the shortened SHA is ambiguous and could refer to more than one object and ask for a longer value.
 
 ---
 
-## SHA-1 Continued
+## SHA Collision
+
+If two files with different content create the same SHA, the first one to be added will win and we would experience a "Hash Collision" and the second file's content would be silently ignored and never saved.
+
+The chance of 2 different files creating the same SHA is incredibly small.
+
+To give a perspective, if 1 million users each created 86,400 unique files per day, it would take 38 billion years
+before it was likely two different files would create the same SHA.
+
+The Sun will turn into a Red Giant and consume the Earth in 7.6 billion years.
+
+![Sun](images/sun.jpg)
+
+---
+
+## The Blob
+
+- The term blob is an abbreviation for "Binary Large Object" and comes from the database ecosystem
+
+- A blob stores the contents of a file only
+
+- There is no file name associated with a blob - just a SHA (e.g. `.git/objects/6f/bcbe046ef6288521d4559c35da541cf4ea428c`)
+
+- File names are stored in Trees with a Tree entry matching a human-readable file name and SHA pointing to the actual content
+
+- If you have two or more copies of the same file in your repository, Git will only store one copy internally
+
+- If you have two files which differ only by one character, Git will store two copies.
+
+- Git uses different compression techniques to minimize "wasted-space"
+
+
+---
+
+## Other
 
 Git stores the blob based on its SHA-1 within its repository:
 
@@ -218,23 +251,6 @@ $ git cat-file -p 6fbcbe046ef6288521d4559c35da541cf4ea428c
 $ git cat-file -t 6fbcbe046ef6288521d4559c35da541cf4ea428c
 blob
 ```
-
----
-
-## SHA-1 Collision
-
-If two files with different content create the same SHA-1, the first one to be added will win and we would experience a "Hash Collision" as the second file's content would be silently ignored and never saved.
-
-The chance of 2 different contents creating the same SHA-1 value is astronomically small.
-If 1 million users created a new file every second of the day and night it would take 38 billion years
-before it was likely a collision would occur. The Sun will turn into a Red Giant and consume the Earth in 7.6 billion years.
-```
-$ echo 'users=10^6; keyspace=2^80; files_per_year=365*24*60*60; \
-        (keyspace/2) / (users * files_per_year) / 10^9' | bc -q
-38
-```
-
-![Sun](images/sun.jpg)
 
 ---
 
