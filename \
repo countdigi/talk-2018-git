@@ -166,16 +166,16 @@ Note the arrows pointing left-to-right in the diagram represent time, but the co
 
 ## The 3 Object Types
 
-Git maintains its Revision History through 3 types of objects:
+Revision History is constructed in Git using 3 types of objects:
 
-- A *Blob* which contains the contents of a file
+- A *Blob* which contains contents of a file
 
 - A *Tree* which contains entries referring to other Blobs and Trees
 
 - A *Commit* which contains:
-   - A pointer to the project's top-level tree at a particular revision
-   - A pointer to a parent commit
-   - A message including details such as the author and date
+   - A pointer to a Tree (snapshot of the project at time of Commit)
+   - A pointer to a Parent Commit (establishes chain of Revision History)
+   - A commit message along with the Author Name and Date
 
 ---
 
