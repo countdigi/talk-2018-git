@@ -92,7 +92,10 @@ University of South Florida<br/>
 - Changes in the local Repository are often pushed to and fetched from another copy of the Repository called a "remote"
   which is no different in nature than the local copy (just located "remotely")
 
-- A common remote is a Github project - this allows the sharing of changes between users through a Central Repository
+- A common remote is a GitHub project
+
+- *Note that GitHub is not Git* - it is an optional service that many people choose to conveniently host a copy of their Repository -
+  you can make your own remote in another location on disk or on another computer and access it with `file:///` and `ssh:///`.
 
 ---
 
@@ -104,7 +107,17 @@ Git has 3 areas where file contents resides:
 
 2. *Index* - A hidden, dynamic, binary file (`.git/index`) where changes to files in the Working Tree are staged for commit
 
-3. *Repository* - A top-level, hidden directory (`.git/`) containing the entire Revision History of the project
+3. *Repository* - A top-level, hidden directory (`.git/`) containing all the Commits and File Revisions of the project (Revision
+   History)
+
+-------
+
+- When things are "clean" - the files in the Working Tree, Index, and most recent Commit in the Repository (`HEAD`) will be identical.
+
+- Users use `git status` on a frequent basis to examine the state of the Working Tree, Index, and `HEAD` as they make changes to
+  files.
+
+
 
 ---
 
