@@ -16,23 +16,22 @@ University of South Florida<br/>
 
 ## Version Control
 
-<br/>
+- A *Version Control System* records changes to a set of files over time so that you can recall specific versions later
 
-- A Version Control System (VCS) helps users manage changes to files in a project over time
+- It records a base version of each file and tracks changes in series of revisions
 
-- A VCS records a base version of each file and tracks changes made over time in a series of versions of the file called Revisions
+- Users choose what makes a new file revision by periodically creating a *Commit*, a point-in-time snapshot of the files
 
-- Over time, the user creates Commits to snapshot new Revisions of the files
+- These commits along with the file revisions are stored in a *Repository*
 
-- Each Commit is stored in a Repository establishing a Revision History
+- The comits and revisions in the *Repository* form a *Revision History*
 
-- The changes from the Revision History can later be rewound and played back against the base versions of the
-  files to create different point-in-time representations
+- The changes from the *Revision History* can later be rewound and played back against the base versions
+  to create different point-in-time representations of the files
 
-- A VCS works best when managing text-based files
+- A VCS is designed to work with text-based files - not binaries such as JPEG Images, Word Documents, Excel Documents
 
-- Most (e.g. Git) can handle binaries such as JPEG images or Word/Excel documents but with limitations
-  since they are essentially a "Black Box" to the VCS
+- Binary files can be tracked but not all operations are supported (no human-readable diffs, no merging of multiple commits, etc.)
 
 ---
 
@@ -185,13 +184,12 @@ A Git Repository has 3 primary object types:
 
 - A *Blob* which holds the contents of a file
 
-- A *Tree* which maps a directory and its files and sub-directories to Blobs and Trees
+- A *Tree* which maps files and sub-directories to Blobs and other Trees (sub-directories)
 
 - A *Commit* which contains:
-  - A pointer to the top-level Tree at time of commit
+  - A pointer to a Tree (top-level at time of commit)
   - A pointer to a parent commit
-  - A commit message
-  - Author and Date of the commit
+  - A commit message with Author and Date
 
 ---
 
@@ -202,7 +200,7 @@ to create a unique, fixed-size identifer based on the object's content.
 
 Git uses the Secure Hash Algorithm 1 (SHA-1) to implement its hash function so
 the identifier is typically referred to as a "SHA". The SHA is a 160 bit value
-represented as a 40-character hexadecimal string (e.g. `6fbcbe046ef6288521d4559c35da541cf4ea428c`).
+represented as a 40-character hexadecimal string.
 
 You can generate your own SHA identifer from the CLI: <br/>
 ```
@@ -210,9 +208,11 @@ $ echo '# Project Acme' | git hash-object --stdin
 6fbcbe046ef6288521d4559c35da541cf4ea428c
 ```
 
-Git allows users to provide a shortened version of the SHA, typically the first 7 characters of the identifier
-so the value `6fbcbe0` could be used to save typing.
-Git will let you know if the shortened SHA is ambiguous and could refer to more than one object and ask for a longer value.
+*Shorthand:*
+
+- Use the first N characters of the SHA (e.g. `6fbcbe0`) to save typing
+
+- If two or more objects have the first N characters in their SHA, Git will ask for more (*never write scripts using shorthand*)
 
 ---
 
@@ -222,7 +222,7 @@ If two files with different content create the same SHA, the first one to be add
 
 The chance of 2 different files creating the same SHA is incredibly small.
 
-To give a perspective, if 1 million users each created 86,400 unique files per day, it would take 38 billion years
+To give perspective, if 1 million users each created 86,400 unique files per day, it would take 38 billion years
 before it was likely two different files would create the same SHA.
 
 The Sun will turn into a Red Giant and consume the Earth in 7.6 billion years.
