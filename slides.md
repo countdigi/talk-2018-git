@@ -35,36 +35,45 @@ University of South Florida<br/>
 
 ---
 
-## Revision History stores Commits
+## Revision History
+
+- As files are changed, those changes are saved by the VCS in a series of commits/revisions
+ which are stored **outside the file** in a *Repository* forming the *Revision History*
 
 ![Final Doc](images/swc-version-1.svg)
 
-A files are changed, those changes are saved by the VCS in a series of commits which are stored in a Revision History
-*outside the file*.
-
 ---
 
-## Commits allow concurrent editing
+## Concurrent editing
+
+
+- Once changes are managed outside the file, you can treat a file differently by playing
+ back different sets of changes
+
+- For example, the set of green changes was made by "User A" and the red changes by "User B"
 
 ![Final Doc](images/swc-version-2.svg)
 
-Once changes are managed outside the file, you can treat a file differently by playing
-back different sets of changes.
+---
 
-For example, the set of green changes was made by User A and the red changes by User B.
+## Merging Changes
+
+- Later the changes from "User A" and "User B" are played against the same base file merging them into one.
+
+- This is a "Killer Feature" of a modern VCS - users can edit the same files and not have to lock others out while they are working
+  on them
+
+![Final Doc](images/swc-version-3.svg)
 
 ---
 
-## Merging Commits
+## Merge Conflict
 
-.right[![Final Doc](images/swc-version-3.svg)]
+- Merges usually work well but if the same location in the file is changed by both, a *Merge Conflict* may occur
 
-Later the sets of changes from User A and User B are played against the same base file merging them into one.
+- The user merging must decide which change "wins" to resolve the conflict.
 
-Typically this works out well, but if both users modify exactly the same location in the file a conflict may occur
-and the user merging the commits must decide which change "wins" to resolve the conflict.
-
-*Note -- One of the caveats of binary files like Word or Excel is that multiple changes cannot be merged*
+![Final Doc](images/swc-version-3.svg)
 
 ---
 
