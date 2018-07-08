@@ -218,14 +218,16 @@ $ echo '# Project Acme' | git hash-object --stdin
 
 ## SHA Collision
 
-If two files with different content create the same SHA, the first one to be added will win and we would experience a "Hash Collision" and the second file's content would be silently ignored and never saved.
+- If two files with different content create the same SHA we would experience a "Hash Collision"
 
-The chance of 2 different files creating the same SHA is incredibly small.
+- The first file to be added would have its contents copied and the second file's content would never be saved since Git would see the object was already there.
 
-To give perspective, if 1 million users each created 86,400 unique files per day, it would take 38 billion years
-before it was likely two different files would create the same SHA.
+- The chance of 2 different files creating the same SHA is incredibly small
 
-The Sun will turn into a Red Giant and consume the Earth in 7.6 billion years.
+- To give perspective, if 1 million users each created 86,400 unique files per day, it would take 38 billion years
+before it was likely two different files would create the same SHA
+
+- The Sun will turn into a Red Giant and consume the Earth in 7.6 billion years
 
 ![Sun](images/sun.jpg)
 
