@@ -1,6 +1,6 @@
 class: top
 
-## Version Control with Git
+## Git Concepts
 
 .right[![Git Logo](images/git-logo.jpg)]
 
@@ -24,7 +24,7 @@ University of South Florida<br/>
 
 - These commits along with the file revisions are stored in a *Repository*
 
-- The comits and revisions in the *Repository* form a *Revision History*
+- The commits and revisions in the *Repository* form a *Revision History*
 
 - The changes from the *Revision History* can later be rewound and played back against the base versions
   to create different point-in-time representations of the files
@@ -58,10 +58,9 @@ University of South Florida<br/>
 
 ## Merging Changes
 
-- Later the changes from "User A" and "User B" are played against the same base file merging them into one.
+- Later the changes from "User A" and "User B" are played against the same base file merging them into one
 
-- This is a "Killer Feature" of a modern VCS - users can edit the same files and not have to lock others out while they are working
-  on them
+- This is a "Killer Feature" of a VCS - Users can edit the same file at the same time and merge them later
 
 ![Final Doc](images/swc-version-3.svg)
 
@@ -69,11 +68,11 @@ University of South Florida<br/>
 
 ## Merge Conflict
 
-- Merges usually work well but if the same location in the file is changed by both, a *Merge Conflict* may occur
+- Merges usually work well but if both users change exactly the same location in the file a *Merge Conflict* may occur
 
 - The user merging must decide which change "wins" to resolve the conflict.
 
-![Final Doc](images/swc-version-3.svg)
+![Final Doc](images/merge-conflict.png)
 
 ---
 
@@ -95,7 +94,7 @@ University of South Florida<br/>
 - A common remote is a GitHub project
 
 - *Note that GitHub is not Git* - it is an optional service that many people choose to conveniently host a copy of their Repository -
-  you can make your own remote in another location on disk or on another computer and access it with `file:///` and `ssh:///`.
+  you can make your own remote in another location on disk or on another computer and access it with `file:///<path>` or `ssh://<user>@<host>:<path>`.
 
 ---
 
@@ -109,14 +108,6 @@ Git has 3 areas where file contents resides:
 
 3. *Repository* - A top-level, hidden directory (`.git/`) containing all the Commits and File Revisions of the project (Revision
    History)
-
--------
-
-- When things are "clean" - the files in the Working Tree, Index, and most recent Commit in the Repository (`HEAD`) will be identical.
-
-- Users use `git status` on a frequent basis to examine the state of the Working Tree, Index, and `HEAD` as they make changes to
-  files.
-
 
 
 ---
@@ -139,7 +130,23 @@ Note:
 
 ---
 
-## Basic Example
+## Basic Lifecyle
+
+1. Files are changed in the Working Tree
+
+2. Changes are staged in the Index
+
+3. Changes in the Index are committed to the Repository
+
+*Note:*
+
+- When things are "clean" - the files in the Working Tree, Index, and most recent Commit in the Repository (`HEAD`) will be identical.
+
+- Users use `git status` on a frequent basis to examine the state of the Working Tree, Index, and `HEAD` as they make changes to files.
+
+---
+
+## Example
 
 To create a git project, we can initialize a project directory:
 ```
@@ -181,60 +188,60 @@ We now have the beginning of the Revision History which can be viewed with the `
 
 ## Commit Graph
 
-Now lets make another change to `README.md` by adding a new line of text.
+Now lets make another change to `README.md` by adding a new line of text and:
+1. Stage the change in the Index: <br/>
+   `add README.md`
+2. Commit the change: <br/>
+   `git commit -m 'Add new line to README.md'`
 
-We then:
+This new commit, `Commit B`, will store a pointer to our first commit `Commit A` and start building a chain.
 
-- Stage the change in the Index with `git add README.md`
-- Commit the change with `git commit -m 'Add new line to README.md'`
+If we did this one more round, we would create `Commit C` linking to `Commit B` and have something like the diagram below.
 
-This new commit will store a pointer to our first commit and start building a chain.
-In the diagram below, we see a 4-commit Revision History with the default branch `master` pointing to the most recent commit id `01ac0f6`.
+The branch that `HEAD` points to is what Git uses for the parent of the next commit. We say we are on the `master` branch
+because `HEAD` points to `master` which points to its head, `Commit C`. From there we can walk back one commit at a time
+to the initial commit, `Commit A`.
 
-The branch or commit id that `HEAD` points to is what Git uses for the parent of the next commit. We say we are on the `master` branch
-because `HEAD` points to `master` which points to its head, commit `01ac0f6`.
-Git will use `01ac0f6` as the parent of the next commit and then move the head of `master` forward to point to the new commit id and so on
-building the Revision History as a linked-list.
-
-![Commit Graph](images/commit-chain.png)
+![Commit Graph](images/commit-graph.jpg)
 
 ---
 
-## The 3 Object Types
+## The 3 Objects
 
-A Git Repository has 3 primary object types:
+Git maintains the Revision History with 3 types of objects:
 
 - A *Blob* which holds the contents of a file
 
-- A *Tree* which maps files and sub-directories to Blobs and other Trees (sub-directories)
+- A *Tree* which maps files and sub-directories to Blobs and other Trees
 
 - A *Commit* which contains:
-  - A pointer to a Tree (top-level at time of commit)
-  - A pointer to a parent commit
-  - A commit message with Author and Date
+  - A pointer to a Tree (Snapshot of top-level directory)
+  - A pointer to its parent commit
+  - A text field with a Message, Author and Date
 
 ---
 
 ## The SHA
 
-When a Blob, Tree, or Commit object is created, Git uses something called a Hash Function
-to create a unique, fixed-size identifer based on the object's content.
+- Git objects are stored and referred to by a unique 40-character identifier based on the files content
 
-Git uses the Secure Hash Algorithm 1 (SHA-1) to implement its hash function so
-the identifier is typically referred to as a "SHA". The SHA is a 160 bit value
-represented as a 40-character hexadecimal string.
+- The algorithm used is the Secure Hash Algorithm 1 (SHA-1) and therefore we refer to an Object's "SHA" which is really its Object ID
 
-You can generate your own SHA identifer from the CLI: <br/>
+- If two identical files with different names are run through the SHA-1 hash function, they will generate the same SHA and be stored in Git only once.
+
+You can generate your own SHA-1 value from the CLI: <br/>
 ```
 $ echo '# Project Acme' | git hash-object --stdin
 6fbcbe046ef6288521d4559c35da541cf4ea428c
 ```
 
-*Shorthand:*
-
-- Use the first N characters of the SHA (e.g. `6fbcbe0`) to save typing
-
-- If two or more objects have the first N characters in their SHA, Git will ask for more (*never write scripts using shorthand*)
+So regardless of name, if you added a file `a.txt` and `b.txt` to Git with the same content `# Project Acme` in each, it would be stored once at:
+```
+.git/
+  - objects/
+     - 6f/
+       - bcbe046ef6288521d4559c35da541cf4ea428c
+```
 
 ---
 
@@ -257,43 +264,178 @@ before it was likely two different files would create the same SHA
 
 ## The Blob
 
-- The term blob is an abbreviation for "Binary Large Object" and comes from the database ecosystem
+- A Blob stores the contents of a file
 
-- A blob stores the contents of a file only
+- Blob stands for "Binary Large Object" and the term comes from databases
 
 - There is no file name associated with a blob - just a SHA (e.g. `.git/objects/6f/bcbe046ef6288521d4559c35da541cf4ea428c`)
+  which is its Object Identifier
 
-- File names are stored in Trees with a Tree entry matching a human-readable file name and SHA pointing to the actual content
+- File names and directory names are stored in Trees with pointers to their Blob/Tree SHA
 
-- If you have two or more copies of the same file in your repository, Git will only store one copy internally
+- If you have two or more copies of the same file Git will only store one copy internally
 
-- If you have two files which differ only by one character, Git will store two copies.
+- If you have two files which differ only by one character, Git will store two Blobs
 
-- Git uses different compression techniques to minimize "wasted-space"
+- Git uses different compression techniques downstream to minimize this potential for wasted-space
+
+---
+
+## The Tree
+
+- A Tree represents a single level of directory information including
+  Blob and Tree SHAs along with their filenames.
+
+![Git Tree](images/git-tree.png)
+
+```
+$ git ls-tree f8a9568
+100644 blob 060c4d9  README
+100644 blob b173668  Rakefile
+040000 tree fd87268  lib
+
+$ git ls-tree fd87268
+100644 blog dec9268  simplegit.rb
+```
+
+---
+
+## The Commit
+
+A Commit contains:
+- A pointer to a Tree (Snapshot of top-level directory)
+- A pointer to its Parent (unless its the root commit)
+- A Commit Message
+- Author, Committer, and Date Information
+
+![Commit](images/git-commit-links.png)
 
 
 ---
 
+## The Commit
+
+A series of linked commits each pointing to
+a  top-level Tree which snapshots the state of all files at a point-in-time.
+
+<br/>
+
+![Commit](images/commit-series.png)
+
+---
+
+## Branches
+
+- A Git branch (sometimes called a branch head) is a lightweight, moveable pointer to a commit
+
+- The default branch name is master but it is not special
+
+- When you are on a branch, every time you commit, Git updates the branch to point to the new commit
+
+Here is how Git tracks the latest commit on the master branch:
+```
+$ cat .git/refs/heads/master
+17e8ca945e8e80ed0b701e15d0dcffcce35fe657
+```
+
+And we know we are "on" the master branch because `HEAD` references it:
+
+```
+$ cat .git/HEAD
+ref: refs/heads/master
+```
+
+---
+
+## Branches
+
+To create a second branch, lets run the command: `git branch hello-world`
+
+This will create a branch named `hello-world` pointing to the same commit as `HEAD` by default.
+
+![head-master](images/git-branch-head-master-2.png)
+
+---
+
+## Branches
+
+New commits will still be on the master branch, so to perform development on hello-world we
+need to use "git checkout":
+```
+$ git checkout hello-world
+```
+
+Now `HEAD` points to the `hello-world` branch.
+
+<br/>
+
+![head-master](images/git-branch-head-hello.png)
+
+---
+
+## Branches
+
+- Now when we make `Commit C5`, the `hello-world` branch advances but `master` does not
+
+- This is because `HEAD` points to `hello-world` so the next commit only advances the branch we are on
+
+<br/>
+
+![head-master](images/git-branch-new-commit.png)
+
+---
+
+## Merging
+
+- Finally we want to merge the change we made on `hello-world` back into `master`
+
+- We checkout `master` and merge `hello-world` *into* it
+
+```
+$ git checkout master
+
+$ git merge hello-world
+```
+
+---
+
+## Fast-Forward Merging
+
+- In the previous example, Git would perform a fast-forward merge
+
+- This happens when:
+  - You create an alternate branch (named 'branch' in the diagram)
+  - Make one or more commits on alternate branch
+  - Checkout master (or whatever branch u wish to merge back into) and merge the alternate branch **before** any other commits are made to master
+
+The only thing Git has to do to merge is advance the commit `master` points to.
+
+![git-merge-ff](images/git-merge-ff.png)
+
+<!-- Notes
+
+- This makes us understand something very important: an object, whatever it is, will always have the same hash in any repository, in
+  any computer, on the face of the Earth.
+
+## Version Control with Git
+## Version Control
+## Revision History
+## Concurrent editing
+## Merging Changes
+## Merge Conflict
+## Git
+## The 3 Areas
+## The Basic Lifecyle
+## Example
+## Staging/Commiting to the Repository
+## Commit Graph
+## The 3 Objects
+## The SHA
+## SHA Collision
+## The Blob
+## The Tree
+## Commit
+## Commit (cont.)
 ## Other
 
-Git stores the blob based on its SHA-1 within its repository:
-
-For example the file with the content `# Project Acme` would be stored at:
-```
-.git/objects/6f/bcbe046ef6288521d4559c35da541cf4ea428c
-```
-
-You can display the contents of a Blob by using the command `git cat-file -p <id>` and its type with `git cat-file -t <id>` , for example:
-```
-$ git cat-file -p 6fbcbe046ef6288521d4559c35da541cf4ea428c
-# Project Acme
-
-$ git cat-file -t 6fbcbe046ef6288521d4559c35da541cf4ea428c
-blob
-```
-
----
-
-## The Commit Object
-
-
+-->
