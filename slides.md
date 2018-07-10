@@ -262,7 +262,7 @@ before it was likely two different files would create the same SHA
 
 ---
 
-## The Blob
+## The Blob Object
 
 - A Blob stores the contents of a file
 
@@ -281,7 +281,7 @@ before it was likely two different files would create the same SHA
 
 ---
 
-## The Tree
+## The Tree Object
 
 - A Tree represents a single level of directory information including
   Blob and Tree SHAs along with their filenames.
@@ -300,7 +300,7 @@ $ git ls-tree fd87268
 
 ---
 
-## The Commit
+## The Commit Object
 
 A Commit contains:
 - A pointer to a Tree (Snapshot of top-level directory)
@@ -313,7 +313,7 @@ A Commit contains:
 
 ---
 
-## The Commit
+## The Commit Object
 
 A series of linked commits each pointing to
 a  top-level Tree which snapshots the state of all files at a point-in-time.
@@ -399,7 +399,7 @@ $ git merge hello-world
 
 ---
 
-## Fast-Forward Merging
+## Fast-Forward Merge
 
 - In the previous example, Git would perform a fast-forward merge
 
@@ -411,6 +411,24 @@ $ git merge hello-world
 The only thing Git has to do to merge is advance the commit `master` points to.
 
 ![git-merge-ff](images/git-merge-ff.png)
+
+---
+
+## Recursive Merge
+
+- If both branches have been changed, Git needs to perform a recursive merge playing changes from each branch into a new Merge
+  Commit (`D` in the diagram)
+
+- The Merge Commit records pointers to two Parents, (`B` and `C`)
+
+<br/>
+
+![recursive-merge](images/recursive-merge.jpg)
+
+---
+
+
+
 
 <!-- Notes
 
