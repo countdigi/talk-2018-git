@@ -417,15 +417,33 @@ The only thing Git has to do to merge is advance the commit `master` points to.
 ## Recursive Merge
 
 - If both branches have been changed, Git needs to perform a recursive merge playing changes from each branch into a new Merge
-  Commit (`D` in the diagram)
+  Commit (`D`)
 
-- The Merge Commit records pointers to two Parents, (`B` and `C`)
+- The Merge Commit records pointers to two Parents (`B` and `C`)
 
 <br/>
 
 ![recursive-merge](images/recursive-merge.jpg)
 
 ---
+
+## Git Reset
+
+- `git reset` - Copies all tracked files from `HEAD` into the Index (unstages all changes in Index)
+
+- `git reset --soft HEAD~1` - Change `HEAD` to previous commit but do not touch Index or Working Tree - any changes since the previous commit are left staged in Index
+
+- `git reset --mixed HEAD~1` - Change `HEAD` to previous commit and copy entries from new `HEAD` into Index
+
+- `git reset --hard HEAD~1` - Change `HEAD` to the previous commit, copy entries from new `HEAD` into Index *and* Working Tree (Destructive)
+
+One technique I use to squash commits - for example here I squash the last 4 local commits into one:
+```
+$ git reset --soft HEAD~4
+$ git commit -m 'New message'
+```
+
+*Note: This rewrites history so use this technique only for local cleanup **before** pushing upstream*
 
 
 
