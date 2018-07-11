@@ -97,6 +97,8 @@ University of South Florida<br/>
   you can make your own remote in another location on disk or on another computer and access it with `file:///<path>` or `ssh://<user>@<host>:<path>`.
 
 
+---
+
 ## Git Model
 
 - Areas
@@ -113,7 +115,7 @@ University of South Florida<br/>
   - Local Branches (refs/heads)
   - Remove Branches (refs/remotes)
 
-- HEAD - Pointer to last Commit
+- *HEAD* - pointer to last Commit
 
 
 ---
