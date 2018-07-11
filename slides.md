@@ -449,7 +449,7 @@ The only thing Git has to do to merge is advance the commit `master` points to.
 
 ## Git Reset
 
-- `git reset` - Copies all tracked files from `HEAD` into the Index (unstages all changes in Index)
+- `git reset` (default implies *--mixed HEAD*) - Copies all tracked files from `HEAD` into the Index (unstages all changes in Index)
 
 - `git reset --soft HEAD~1` - Change `HEAD` to previous commit but do not touch Index or Working Tree - any changes since the previous commit are left staged in Index
 
