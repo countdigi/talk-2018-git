@@ -112,8 +112,8 @@ University of South Florida<br/>
   - Index
 
 - References
-  - Local Branches (refs/heads)
-  - Remove Branches (refs/remotes)
+  - Local Branches (refs/heads/master)
+  - Remote Branches (refs/remotes/origin)
 
 - *HEAD* - pointer to last Commit
 
