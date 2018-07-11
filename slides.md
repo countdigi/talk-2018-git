@@ -115,7 +115,7 @@ University of South Florida<br/>
   - Local Branches (refs/heads/master)
   - Remote Branches (refs/remotes/origin)
 
-- *HEAD* - pointer to last Commit
+- *HEAD* - pointer to last Commit (usually a ref to branch)
 
 
 ---
