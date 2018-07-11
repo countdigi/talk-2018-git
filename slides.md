@@ -96,6 +96,26 @@ University of South Florida<br/>
 - *Note that GitHub is not Git* - it is an optional service that many people choose to conveniently host a copy of their Repository -
   you can make your own remote in another location on disk or on another computer and access it with `file:///<path>` or `ssh://<user>@<host>:<path>`.
 
+
+## Git Model
+
+- Areas
+  - Working Tree
+  - Index
+  - Repository
+
+- Objects
+  - Blob
+  - Tree
+  - Index
+
+- References
+  - Local Branches (refs/heads)
+  - Remove Branches (refs/remotes)
+
+- HEAD - Pointer to last Commit
+
+
 ---
 
 ## The 3 Areas
