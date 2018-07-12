@@ -120,6 +120,26 @@ University of South Florida<br/>
 
 ---
 
+## The Git Model
+
+- 3 places (File contents can be in)
+  - Working Tree
+  - Index
+  - Repository
+
+- 3 Objects (that make the Revision History
+  - Blob
+  - Tree
+  - Commit
+
+- Local Branches (refs/heads/master)
+
+- Remote Branches (refs/remotes/origin/master)
+
+- HEAD
+
+---
+
 ## The 3 Areas
 
 Git has 3 areas where file contents resides:
@@ -221,8 +241,7 @@ This new commit, `Commit B`, will store a pointer to our first commit `Commit A`
 If we did this one more round, we would create `Commit C` linking to `Commit B` and have something like the diagram below.
 
 The branch that `HEAD` points to is what Git uses for the parent of the next commit. We say we are on the `master` branch
-because `HEAD` points to `master` which points to its head, `Commit C`. From there we can walk back one commit at a time
-to the initial commit, `Commit A`.
+because `HEAD` points to `master` which points to `Commit C`.
 
 ![Commit Graph](images/commit-graph.jpg)
 
@@ -449,6 +468,21 @@ The only thing Git has to do to merge is advance the commit `master` points to.
 
 ---
 
+
+## Git Rebase
+
+![git-rebase](images/rebase.svg)
+
+Example:
+- `git checkout feature` - Get on the branch you want to rebase
+- `git rebase master` - Replay the changes on feature (last 2 in example) on top of master
+
+- Rebase means "Rewind the changes I have made on my branch and attach them to the end of another"
+
+- Git replays all changes on the branch from the common ancestor of both branches
+
+---
+
 ## Git Reset
 
 - `git reset` (default implies *--mixed HEAD*) - Copies all tracked files from `HEAD` into the Index (unstages all changes in Index)
@@ -466,9 +500,6 @@ $ git commit -m 'New message'
 ```
 
 *Note: This rewrites history so use this technique only for local cleanup **before** pushing upstream*
-
-
-
 
 <!-- Notes
 
