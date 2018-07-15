@@ -1,3 +1,73 @@
+## Git Concepts
+
+## Version Control
+
+## Revision History
+
+## Concurrent editing
+
+## Merging Changes
+
+## Merge Conflict
+
+## Git
+
+## Git Model
+
+## The Git Model
+
+## The 3 Areas
+
+## The 3 Areas
+
+## Basic Lifecyle
+
+## Example
+
+## Staging/Commiting to the Repository
+
+## Commit Graph
+
+## The 3 Objects
+
+## The SHA
+
+## SHA Collision
+
+## The Blob Object
+## The Tree Object ## The Commit Object
+## The Commit Object
+## Branches
+## Branches
+## Branches
+## Branches
+## Merging
+## Fast-Forward Merge
+## Recursive Merge
+## Git Rebase
+## Git Reset
+## Version Control with Git
+## Version Control
+## Revision History
+## Concurrent editing
+## Merging Changes
+## Merge Conflict
+## Git
+## The 3 Areas
+## The Basic Lifecyle
+## Example
+## Staging/Commiting to the Repository
+## Commit Graph
+## The 3 Objects
+## The SHA
+## SHA Collision
+## The Blob
+## The Tree
+## Commit
+## Commit (cont.)
+## Other
+
+
 - Git manages changes to a tree of files over time
 
 - Git is optimized for:

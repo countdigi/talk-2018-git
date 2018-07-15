@@ -101,21 +101,20 @@ University of South Florida<br/>
 
 ## Git Model
 
-- Areas
-  - Working Tree
-  - Index
-  - Repository
+- 3 Stages of File Content
+  - Working Tree (Untracked, Ignored, Tracked)
+  - Index (Tracked)
+  - Repository (Tracked)
 
-- Objects
-  - Blob
-  - Tree
-  - Index
+- 3 Types of Objects in Repository
+  - Blob - File content
+  - Tree - Directory content
+  - Commit - Pointer to Tree and previous Commit (parent)
 
-- References
-  - Local Branches (refs/heads/master)
-  - Remote Branches (refs/remotes/origin/master)
-
-- *HEAD* - pointer to last Commit (usually a ref to branch)
+- 3 Types of Pointers
+  - Local Branch Heads (e.g. refs/heads/master)
+  - Remote Branch Heads (e.g. refs/remotes/origin/master)
+  - HEAD - The local branch head we point to
 
 
 ---
