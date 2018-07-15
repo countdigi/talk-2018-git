@@ -116,30 +116,9 @@ University of South Florida<br/>
   - Remote Branch Heads (e.g. refs/remotes/origin/master)
   - HEAD - The local branch head we point to
 
-
 ---
 
-## The Git Model
-
-- 3 places (File contents can be in)
-  - Working Tree
-  - Index
-  - Repository
-
-- 3 Objects (that make the Revision History
-  - Blob
-  - Tree
-  - Commit
-
-- Local Branches (refs/heads/master)
-
-- Remote Branches (refs/remotes/origin/master)
-
-- HEAD
-
----
-
-## The 3 Areas
+## The 3 Stages
 
 Git has 3 areas where file contents resides:
 
@@ -153,7 +132,7 @@ Git has 3 areas where file contents resides:
 
 ---
 
-## The 3 Areas
+## The 3 Stages
 
 .right[![Git Areas](images/3-tier.png)]
 
