@@ -101,7 +101,7 @@ University of South Florida<br/>
 
 ## Git Model
 
-- 3 Stages of File Content
+- 3 Places for File Content
   - Working Tree (Untracked, Ignored, Tracked)
   - Index (Tracked)
   - Repository (Tracked)
